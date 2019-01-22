@@ -1,0 +1,315 @@
+<div class="padding" style="padding: 1.5rem 1.5rem 0 1.5rem;">
+    <div class="box">
+        <div class="box-body" ng-form="filterForm">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>User Id</label>
+                        <input type="text" class="form-control" ng-model="filter.userId"
+                               placeholder="User Id">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>კლიენტის PID</label>
+                        <input type="text" class="form-control" ng-model="filter.clientId"
+                               placeholder="კლიენტის პირადი ნომერი">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>დან</label>
+                        <select class="form-control"
+                                ng-model="filter.ccyFrom"
+                                ng-options="item.id as item.title for item in ccyList">
+                            <option value='' selected="selected">- ვალუტა -</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>ში</label>
+                        <select class="form-control"
+                                ng-model="filter.ccyTo"
+                                ng-options="item.id as item.title for item in ccyList">
+                            <option value='' selected="selected">- ვალუტა -</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>კომპანია: </label>
+                        <select class="form-control"
+                                ng-model="filter.companyId"
+                                ng-options="item.id as item.title for item in companies">
+                            <option value='' selected="selected">- კომპანია -</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>თარიღი დან: </label>
+                        <input class="form-control"
+                               placeholder="წელი-თვ-დღ"
+                               ng-model="filter.dateFrom"
+                               imperio-datepicker/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>თარიღი მდე: </label>
+                        <input class="form-control"
+                               placeholder="წელი-თვ-დღ"
+                               ng-model="filter.dateTo"
+                               imperio-datepicker/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Transaction ID: </label>
+                        <input class="form-control"
+                               placeholder="ტრანზაქციის ID"
+                               ng-model="filter.tid"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <button type="button"
+                                class="btn danger p-x-md"
+                                ng-disabled="filterForm.$invalid"
+                                ng-click="doFilter()"
+                                disabled="disabled">
+                            გაფილტვრა
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn success" ng-click="showAddEdit()" style="margin-left: 1.5rem;">ახალი ტრანზაქცია</button>
+
+<div class="padding">
+    <div class="box">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>#</th>
+                    <th>კომპანია</th>
+                    <th>კლიენტი</th>
+                    <th>დოკ</th>
+                    <th>მისამართი</th>
+                    <th>მომხმარებელი</th>
+                    <th>დან</th>
+                    <th>ში</th>
+                    <th>კურსი</th>
+                    <th>თანხა</th>
+                    <th>შექმნის თარიღი</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.results">
+                    <td>{{item.id}}</td>
+                    <td>{{item.transactionId}}</td>
+                    <td>{{item.company.title}}</td>
+                    <td>{{item.customer.fullName}}</td>
+                    <td ng-if="item.fileUrl"><a href="/uploads/{{item.fileUrl}}">{{item.fileUrl}}</a></td>
+                    <td ng-if="!item.fileUrl">{{item.fileUrl}}</td>
+                    <td>{{item.customerAddress}}</td>
+                    <td>{{item.user.username}}</td>
+                    <td>{{item.ccyFrom.title}}</td>
+                    <td>{{item.ccyTo.title}}</td>
+                    <td>{{item.fromRate}}</td>
+                    <td>{{item.amount}} {{item.ccyFrom.title}}</td>
+                    <td ng-bind="item.dateCreated | date:'dd-MM-yyyy hh:mm'"></td>
+                    <td><i class="fa fa-fw fa-pencil" ng-click="showAddEdit(item)"></i>
+                        <i class="fa fa-fw fa-trash-o"
+                           ng-model="item"
+                           ng-popover-confirm="delete({{item.id}})"
+                           data-title="გსურთ წაშალოთ ჩანაწერი?"> </i>
+                    </td>
+                </tr>
+                <tr ng-if="!data.results.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="showAddEdit" class="modal black-overlay" data-backdrop="false">
+    <div class="modal-dialog modal-lg" ng-form="addEditForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ეროვნულის მიმდინარე ინფო</h5>
+            </div>
+            <div class="modal-body p-lg">
+
+                <h5 class="modal-title">
+                    {{ calculate() }}
+                    <span>{{ getSelectedCCYTo(object.ccyTo.id) }}</span>
+                </h5>
+                <section>
+
+                    <imperio-file-uploader-input></imperio-file-uploader-input>
+
+                    <div class="row">
+                        <section class="col col-md-12" data-ng-controller="TCustomerController">
+                            <section>
+                                <div class="input-group">
+                                    <input type="hidden" ng-model="object.customer.id"
+                                           class="form-control" ng-disabled="true"
+                                           disabled readonly>
+
+                                    <label class="form-control" ng-if="object.customer != null">
+                                        {{object.customer.fullName + ' ' + object.customer.pid}}
+                                    </label>
+
+                                    <input type="text" ng-model="AmfTable.searchString" ng-if="object.customer == null"
+                                           ng-change="AmfTable.textSearch(300)"
+                                           placeholder="აირჩიეთ კლიენტი"
+                                           class="form-control">
+
+                                    <span class="input-group-btn">
+                                        <button ng-click="object.customer = undefined" class="btn white">
+                                            <span class="fa fa-remove"></span>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </section>
+                            <section ng-if="data.results && data.results.length > 0 && AmfTable.searchString.length > 0"
+                                     style="padding-left: 0px !important;
+                                             padding-right: 0px;
+                                             border: solid 1px #eceeef;
+                                             border-top: 0;">
+
+                                <div class="table-responsive clientsTable">
+                                    <table class="table lookuptable table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                სახელი,გვარი, პ/ნომერი
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="lookuptr" ng-repeat="item in data.results">
+                                            <td ng-click="chooseItem(item)">{{item.fullName + ' ' + item.pid}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="hide-if-no-paging">
+                                        <tr>
+                                            <td colspan="50" class="text-center">
+                                                <pagination total-items="AmfTable.totalItems"
+                                                            page="AmfTable.currentPage"
+                                                            on-select-page="AmfTable.pageChanged(page)"
+                                                            max-size="5"
+                                                            class="pagination-sm"
+                                                            boundary-links="true"
+                                                            rotate="false"
+                                                            items-per-page="AmfTable.pageSize"
+                                                            num-pages="numPages">
+                                                </pagination>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                            </section>
+                        </section>
+                    </div>
+
+                    <br/>
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <label>კომპანია: </label>
+                            <select class="form-control"
+                                    ng-model="object.company.id"
+                                    ng-options="item.id as item.title for item in companies">
+                                <option value='' selected="selected">- აირჩიეთ კომპანია -</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>გაყიდვა: </label>
+                            <select class="form-control"
+                                    ng-model="object.ccyFrom.id"
+                                    ng-options="item.id as item.title for item in ccyList">
+                                <option value='' selected="selected">- აირჩიეთ (დან) -</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>ყიდვა: </label>
+                            <select class="form-control"
+                                    ng-model="object.ccyTo.id"
+                                    ng-options="item.id as item.title for item in ccyList">
+                                <option value='' selected="selected">- აირჩიეთ (ში) -</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label>კურსი: </label>
+                            <input class="form-control rounded"
+                                   type="number"
+                                   placeholder="კურსი(გაყიდვა)"
+                                   ng-model="object.fromRate"/>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label>თანხა: </label>
+                            <input class="form-control rounded"
+                                   type="number"
+                                   placeholder="თანხა"
+                                   ng-model="object.amount"/>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>მისამართი: </label>
+                            <input class="form-control rounded"
+                                   type="text"
+                                   placeholder="მისამართი"
+                                   ng-model="object.customerAddress"/>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Transaction Id: </label>
+                            <input class="form-control rounded"
+                                   type="text"
+                                   placeholder="TransactionId"
+                                   ng-model="object.transactionId"/>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">Close</button>
+                <button type="button" class="btn danger p-x-md" ng-disabled="addEditForm.$invalid" ng-click="save()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

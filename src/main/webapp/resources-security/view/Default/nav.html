@@ -1,0 +1,52 @@
+<ul class="nav" ng-if="$root.loggedIn" ui-nav>
+    <li class="nav-header hidden-folded">
+        <small class="text-muted">ვალუტები</small>
+    </li>
+    <li ui-sref-active="active">
+        <a ui-sref="app.TCCY">
+            <span class="nav-icon"><i class="fa fa-dollar" aria-hidden="true"></i></span>
+            <span class="nav-text">სია</span>
+        </a>
+    </li>
+    <li ui-sref-active="active">
+        <a ui-sref="app.TCCYExchange">
+            <span class="nav-icon"><i class="fa fa-exchange" aria-hidden="true"></i></span>
+            <span class="nav-text">გადაცვლა</span>
+        </a>
+    </li>
+    <li class="nav-header hidden-folded">
+        <small class="text-muted">ტრანსფერები</small>
+    </li>
+
+    <li ui-sref-active="active">
+        <a ui-sref="app.TCompany">
+            <span class="nav-icon"><i class="fa fa-building" aria-hidden="true"></i></span>
+            <span class="nav-text">კომპანია</span>
+        </a>
+    </li>
+
+    <li ui-sref-active="active">
+        <a ui-sref="app.TTransfers">
+            <span class="nav-icon"><i class="fa fa-transgender" aria-hidden="true"></i></span>
+            <span class="nav-text">ტრანსფერები</span>
+        </a>
+    </li>
+
+    <li class="nav-header hidden-folded">
+        <small class="text-muted">მომხმარებლები</small>
+    </li>
+
+    <li ui-sref-active="active">
+        <a ui-sref="app.TCustomer">
+            <span class="nav-icon"><i class="fa fa-group" aria-hidden="true"></i></span>
+            <span class="nav-text">კლიენტები</span>
+        </a>
+    </li>
+
+    <li ui-sref-active="active">
+        <a ui-sref="app.user.list">
+            <span class="nav-icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+            <span class="nav-text">შიდა</span>
+        </a>
+    </li>
+</ul>

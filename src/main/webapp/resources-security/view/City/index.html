@@ -1,0 +1,106 @@
+<div class="padding">
+    <div class="box">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Country</th>
+                    <th>დასახელება</th>
+                    <th>შეიქმნა</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.results">
+                    <td>{{item.id}}</td>
+                    <td>{{item.country.title}}</td>
+                    <td>{{item.title}}</td>
+                    <td ng-bind="item.dateCreated | date:'dd-MM-yyyy hh:mm'"></td>
+                    <td>
+                        <i class="fa fa-fw fa-pencil" ng-click="showAddEdit(item)"></i>
+                        <i class="fa fa-fw fa-trash-o" ng-model="item"
+                           ng-popover-confirm="delete({{item.id}})"
+                           data-title="გსურთ წაშალოთ ჩანაწერი?">
+                        </i>
+                    </td>
+                </tr>
+                <tr ng-if="!data.results.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <imperio-fab></imperio-fab>
+</div>
+
+<div id="showAddEdit" class="modal black-overlay" data-backdrop="false">
+    <div class="modal-dialog modal-lg" ng-form="addEditForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{init.action}}</h5>
+            </div>
+            <div class="modal-body p-lg">
+                <div class="form-group">
+                    <label>Country: </label>
+                    <select class="form-control"
+                            ng-model="object.country.id"
+                            ng-options="item.id as item.title for item in countries"
+                            required>
+                        <option value='' selected="selected">- Select Country -</option>
+                    </select>
+                </div>
+                <section>
+                    <div class="form-group">
+                        <label>დასახელება: </label>
+                        <input class="form-control rounded"
+                               type="text"
+                               placeholder="Enter country title"
+                               ng-model="object.title" required>
+                    </div>
+                </section>
+                <section>
+                    <div class="form-group">
+                        <label>Lat: </label>
+                        <input class="form-control rounded"
+                               type="text"
+                               placeholder="Enter Lat"
+                               ng-model="object.lat" required>
+                    </div>
+                </section>
+                <section>
+                    <div class="form-group">
+                        <label>Lng: </label>
+                        <input class="form-control rounded"
+                               type="text"
+                               placeholder="Enter Lng"
+                               ng-model="object.lng" required>
+                    </div>
+                </section>
+                <section>
+                    <div class="form-group">
+                        <label>SRID: </label>
+                        <input class="form-control rounded"
+                               type="text"
+                               placeholder="Enter SRID"
+                               ng-model="object.srid" required>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">Close</button>
+                <button type="button" class="btn danger p-x-md" ng-disabled="addEditForm.$invalid"
+                        ng-click="save()">Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

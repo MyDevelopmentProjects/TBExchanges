@@ -1,0 +1,26 @@
+<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" style="padding-top:50px;">
+    <div class="login-panel panel panel-default">
+        <div class="panel-heading" style="text-align: center;">
+        </div>
+        <div class="panel-body" ng-form="formValidator">
+            <form role="form" name="loginForm" >
+                <fieldset>
+                    <div class="form-group"
+                         ng-class="{'has-error': loginForm.username.$invalid, 'has-success':loginForm.username.$valid}">
+                        <input class="form-control" placeholder="Username" name="username" type="text"
+                               ng-model="auth.username" required>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{'has-error': loginForm.password.$invalid, 'has-success':loginForm.password.$valid}">
+                        <input class="form-control" placeholder="Password" name="password" type="password"
+                               ng-model="auth.password" required>
+                    </div>
+                </fieldset>
+            </form>
+            <button class="btn btn-primary col-md-12"
+                    style="background-color: #ee4337;"
+                    ng-disabled="formValidator.$invalid"
+                    ng-click="auth()">Authorize</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'GeoCaps';
+    src: url(BPG_GEL_DejaVuSans_Caps.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'GeoSmall';
+    src: url(BPG_GEL_DejaVuSans.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Lari';
+    src: url(LARI.woff) format('woff');
+}
+
+body {
+    font-family: "GeoSmall", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
